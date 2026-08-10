@@ -1,0 +1,18 @@
+FROM node:lts-alpine AS deps
+WORKDIR /app
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+FROM deps AS dev
+COPY . .
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+FROM deps AS build
+COPY . .
+ARG VITE_API_URL=http://localhost:8000
+ENV VITE_API_URL=$VITE_API_URL
+RUN npm run build
+
+FROM nginx:alpine AS prod
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80

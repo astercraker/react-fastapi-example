@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - /app/.venv # preserva el venv instalado en el build
+      - .:/workspace:cached # monta el repo completo (para el devcontainer)
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    image: react-fastapi-example-frontend:dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # preserva las deps instaladas en el build
+    depends_on:
+      - backend
