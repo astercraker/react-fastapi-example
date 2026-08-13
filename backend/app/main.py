@@ -12,10 +12,10 @@ app.add_middleware(
 
 
 @app.get("/")
-def root():
-    return {"message": "Hello from FastAPI"}
+async def root():
+    return {"message": "Test Async Hello from FastAPI"}
 
 
 @app.get("/health")
-def health():
+async def health():
     return {"status": "ok"}
