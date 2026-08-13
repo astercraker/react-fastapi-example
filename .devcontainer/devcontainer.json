@@ -14,7 +14,7 @@
       "onAutoForward": "notify"
     }
   },
-  "postCreateCommand": "cd /app && uv sync",
+  "postCreateCommand": "git config --global --add safe.directory /workspace && cd /app && uv sync && ln -sf /root/.claude/.claude.json /root/.claude.json",
   "remoteUser": "root",
   "customizations": {
     "vscode": {
@@ -23,7 +23,8 @@
         "ms-python.vscode-pylance",
         "charliermarsh.ruff",
         "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "anthropic.claude-code"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/app/.venv/bin/python",

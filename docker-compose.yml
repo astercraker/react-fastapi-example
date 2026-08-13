@@ -8,6 +8,7 @@ services:
       - ./backend:/app
       - /app/.venv # preserva el venv instalado en el build
       - .:/workspace:cached # monta el repo completo (para el devcontainer)
+      - claude-data:/root/.claude # persiste auth/historial de Claude Code entre rebuilds
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
   frontend:
@@ -22,3 +23,6 @@ services:
       - /app/node_modules # preserva las deps instaladas en el build
     depends_on:
       - backend
+
+volumes:
+  claude-data:
