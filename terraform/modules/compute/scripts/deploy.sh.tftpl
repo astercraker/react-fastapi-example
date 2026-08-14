@@ -4,6 +4,11 @@ set -euo pipefail
 curl -fsSL https://get.docker.com | sh
 systemctl enable --now docker
 
+# --- Login a GitHub Container Registry (imagen privada) ---
+%{ if github_token != "" }
+echo "${github_token}" | docker login ghcr.io -u "${github_user}" --password-stdin
+%{ endif }
+
 REPO_URL="${repo_url}"
 %{ if github_token != "" }
 REPO_URL="$(echo "$REPO_URL" | sed "s#https://#https://${github_user}:${github_token}@#")"
@@ -35,4 +40,5 @@ if [ -f "${deploy_path}/.env" ]; then
   chmod 600 "${deploy_path}/.env"
 fi
 
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d

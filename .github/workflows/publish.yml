@@ -1,0 +1,61 @@
+name: Publish container images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - "frontend/**"
+      - ".github/workflows/publish.yml"
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_OWNER: astercraker
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/react-fastapi-example-backend:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/react-fastapi-example-backend:${{ github.sha }}
+
+  frontend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          target: prod
+          build-args: |
+            VITE_API_URL=/api
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/react-fastapi-example-frontend:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/react-fastapi-example-frontend:${{ github.sha }}

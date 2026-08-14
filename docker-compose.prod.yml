@@ -1,5 +1,6 @@
 services:
   backend:
+    image: ghcr.io/astercraker/react-fastapi-example-backend:${IMAGE_TAG:-latest}
     volumes: !reset []
     ports: !reset []
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000
@@ -10,7 +11,7 @@ services:
       target: prod
       args:
         VITE_API_URL: /api
-    image: react-fastapi-example-frontend:prod
+    image: ghcr.io/astercraker/react-fastapi-example-frontend:${IMAGE_TAG:-latest}
     ports: !reset []
     volumes: !reset []
     restart: unless-stopped
