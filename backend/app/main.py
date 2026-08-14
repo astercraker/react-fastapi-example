@@ -1,7 +1,13 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import create_engine, text
 
 app = FastAPI(title="react-fastapi-example")
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
+engine = create_engine(DATABASE_URL) if DATABASE_URL else None
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,3 +25,15 @@ async def root():
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/health/db")
+async def health_db():
+    if engine is None:
+        return {"db": "not_configured"}
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        return {"db": "connected"}
+    except Exception as e:
+        return {"db": "error", "detail": str(e)}
