@@ -1,0 +1,38 @@
+#!/bin/bash
+set -euo pipefail
+
+curl -fsSL https://get.docker.com | sh
+systemctl enable --now docker
+
+REPO_URL="${repo_url}"
+%{ if github_token != "" }
+REPO_URL="$(echo "$REPO_URL" | sed "s#https://#https://${github_user}:${github_token}@#")"
+%{ endif }
+
+if [ -d "${deploy_path}/.git" ]; then
+  cd "${deploy_path}"
+  git fetch origin
+  git checkout "${repo_branch}"
+  git pull origin "${repo_branch}"
+else
+  mkdir -p "$(dirname "${deploy_path}")"
+  git clone --branch "${repo_branch}" "$REPO_URL" "${deploy_path}"
+  cd "${deploy_path}"
+fi
+
+rm -f "${deploy_path}/.env"
+%{ if database_url != "" }
+cat >> "${deploy_path}/.env" <<'ENV_EOF'
+DATABASE_URL=${database_url}
+ENV_EOF
+%{ endif }
+%{ if domain != "" }
+cat >> "${deploy_path}/.env" <<'ENV_EOF'
+DOMAIN=${domain}
+ENV_EOF
+%{ endif }
+if [ -f "${deploy_path}/.env" ]; then
+  chmod 600 "${deploy_path}/.env"
+fi
+
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
