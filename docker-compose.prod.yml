@@ -1,14 +1,36 @@
 services:
   backend:
     volumes: !reset []
+    ports: !reset []
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000
     restart: unless-stopped
 
   frontend:
     build:
       target: prod
+      args:
+        VITE_API_URL: /api
     image: react-fastapi-example-frontend:prod
-    ports: !override
-      - "80:80"
+    ports: !reset []
     volumes: !reset []
     restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:
