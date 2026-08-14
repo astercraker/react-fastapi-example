@@ -1,6 +1,6 @@
 {
   "name": "React + FastAPI",
-  "dockerComposeFile": ["../docker-compose.yml"],
+  "dockerComposeFile": ["../docker-compose.yml", "../docker-compose.override.yml"],
   "service": "backend",
   "workspaceFolder": "/workspace",
   "forwardPorts": [8000, 5173],

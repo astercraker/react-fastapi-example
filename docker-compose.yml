@@ -9,6 +9,8 @@ services:
       - /app/.venv # preserva el venv instalado en el build
       - .:/workspace:cached # monta el repo completo (para el devcontainer)
       - claude-data:/root/.claude # persiste auth/historial de Claude Code entre rebuilds
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-}
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
   frontend:
