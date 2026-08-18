@@ -3,8 +3,9 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import SQLAlchemyError
 
-app = FastAPI(title="react-fastapi-example")
+app = FastAPI(title="react-fastapi-example", root_path="/api")
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 engine = create_engine(DATABASE_URL) if DATABASE_URL else None
@@ -35,5 +36,5 @@ async def health_db():
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
         return {"db": "connected"}
-    except Exception as e:
+    except SQLAlchemyError as e:
         return {"db": "error", "detail": str(e)}
