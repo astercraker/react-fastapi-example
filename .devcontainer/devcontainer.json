@@ -1,6 +1,9 @@
 {
   "name": "React + FastAPI",
-  "dockerComposeFile": ["../docker-compose.yml", "../docker-compose.override.yml"],
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "../docker-compose.override.yml"
+  ],
   "service": "backend",
   "workspaceFolder": "/workspace",
   "forwardPorts": [8000, 5173],
@@ -24,7 +27,9 @@
         "charliermarsh.ruff",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "anthropic.claude-code"
+        "anthropic.claude-code",
+        "hashicorp.terraform",
+        "github.vscode-github-actions"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/app/.venv/bin/python",
