@@ -84,3 +84,16 @@ variable "domain" {
   type        = string
   default     = ""
 }
+
+variable "dashboard_user" {
+  description = "Usuario del basicauth de /dashboard, inyectado como DASHBOARD_USER"
+  type        = string
+  default     = ""
+}
+
+variable "dashboard_pass_hash" {
+  description = "Hash bcrypt de la contraseña de /dashboard, inyectado como DASHBOARD_PASS_HASH"
+  type        = string
+  default     = ""
+  sensitive   = true
+}

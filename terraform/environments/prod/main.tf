@@ -43,4 +43,7 @@ module "compute" {
   github_token = var.github_token
   database_url = module.database.database_url
   domain       = var.domain
+
+  dashboard_user      = var.dashboard_user
+  dashboard_pass_hash = var.dashboard_pass_hash
 }

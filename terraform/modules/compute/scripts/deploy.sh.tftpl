@@ -36,6 +36,16 @@ cat >> "${deploy_path}/.env" <<'ENV_EOF'
 DOMAIN=${domain}
 ENV_EOF
 %{ endif }
+%{ if dashboard_user != "" }
+cat >> "${deploy_path}/.env" <<'ENV_EOF'
+DASHBOARD_USER=${dashboard_user}
+ENV_EOF
+%{ endif }
+%{ if dashboard_pass_hash != "" }
+cat >> "${deploy_path}/.env" <<'ENV_EOF'
+DASHBOARD_PASS_HASH=${dashboard_pass_hash}
+ENV_EOF
+%{ endif }
 if [ -f "${deploy_path}/.env" ]; then
   chmod 600 "${deploy_path}/.env"
 fi

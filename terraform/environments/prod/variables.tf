@@ -68,3 +68,16 @@ variable "domain" {
   description = "Dominio público de la app (usado por Caddy para emitir el certificado TLS)"
   type        = string
 }
+
+variable "dashboard_user" {
+  description = "Usuario para el basicauth del /dashboard en Caddy"
+  type        = string
+  default     = ""
+}
+
+variable "dashboard_pass_hash" {
+  description = "Hash bcrypt (caddy hash-password) de la contraseña del /dashboard"
+  type        = string
+  default     = ""
+  sensitive   = true
+}

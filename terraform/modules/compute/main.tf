@@ -20,8 +20,10 @@ resource "digitalocean_droplet" "this" {
     github_user  = var.github_user
     github_token = var.github_token
     deploy_path  = var.deploy_path
-    database_url = var.database_url
-    domain       = var.domain
+    database_url        = var.database_url
+    domain              = var.domain
+    dashboard_user      = var.dashboard_user
+    dashboard_pass_hash = var.dashboard_pass_hash
   })
 }
 
