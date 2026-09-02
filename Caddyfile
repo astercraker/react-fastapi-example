@@ -13,6 +13,14 @@
 		reverse_proxy backend:8000
 	}
 
+	handle_path /dashboard* {
+		basicauth {
+			{$DASHBOARD_USER} {$DASHBOARD_PASS_HASH}
+		}
+		rewrite * /dashboard.html
+		reverse_proxy frontend:80
+	}
+
 	handle {
 		reverse_proxy frontend:80
 	}

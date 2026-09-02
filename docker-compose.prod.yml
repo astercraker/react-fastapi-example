@@ -24,6 +24,8 @@ services:
       - "127.0.0.1:9180:9180"
     environment:
       - DOMAIN=${DOMAIN:-localhost}
+      - DASHBOARD_USER=${DASHBOARD_USER:-}
+      - DASHBOARD_PASS_HASH=${DASHBOARD_PASS_HASH:-}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
