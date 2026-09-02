@@ -1,3 +1,13 @@
+{
+	servers {
+		metrics
+	}
+}
+
+:9180 {
+	metrics /metrics
+}
+
 {$DOMAIN} {
 	handle_path /api/* {
 		reverse_proxy backend:8000

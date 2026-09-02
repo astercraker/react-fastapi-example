@@ -21,6 +21,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "127.0.0.1:9180:9180"
     environment:
       - DOMAIN=${DOMAIN:-localhost}
     volumes:
