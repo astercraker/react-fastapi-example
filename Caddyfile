@@ -9,6 +9,13 @@
 }
 
 {$DOMAIN} {
+	handle_path /api/docs* /api/redoc* /api/openapi.json {
+		basicauth {
+			{$DASHBOARD_USER} {$DASHBOARD_PASS_HASH}
+		}
+		reverse_proxy backend:8000
+	}
+
 	handle_path /api/* {
 		reverse_proxy backend:8000
 	}
