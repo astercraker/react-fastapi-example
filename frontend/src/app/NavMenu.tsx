@@ -1,14 +1,41 @@
 import { useEffect, useState } from "react";
 
+function RetosIcon() {
+  return (
+    <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.472V16a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.528A6 6 0 0 0 12 3Z" />
+  );
+}
+function BlogIcon() {
+  return (
+    <>
+      <path d="M6 3h9l3 3v15H6Z" />
+      <path d="M15 3v4h4M9 12h6M9 16h6" />
+    </>
+  );
+}
+function AgendaIcon() {
+  return (
+    <>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M16 3v4M8 3v4M3 10h18" />
+    </>
+  );
+}
+function HerramientasIcon() {
+  return (
+    <path d="M14.7 6.3a4 4 0 1 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.1 2.1-2.5-.7-.7-2.5 2.1-2.1Z" />
+  );
+}
+
 /**
  * Mockup only: hrefs are placeholders. Real routing (react-router-dom)
  * gets wired in separately — swap for <Link to="..."> then.
  */
 export const navLinks = [
-  { label: "Retos", href: "/retos" },
-  { label: "Blog", href: "/blog" },
-  { label: "Agenda", href: "/agenda" },
-  { label: "Herramientas", href: "/herramientas" },
+  { label: "Retos", href: "/retos", Icon: RetosIcon },
+  { label: "Blog", href: "/blog", Icon: BlogIcon },
+  { label: "Agenda", href: "/agenda", Icon: AgendaIcon },
+  { label: "Herramientas", href: "/herramientas", Icon: HerramientasIcon },
 ];
 
 function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
@@ -43,6 +70,29 @@ function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
         className={`board-hamburger-bar${isOpen ? " is-open-bottom" : ""}`}
       />
     </svg>
+  );
+}
+
+export function BottomTabBar() {
+  return (
+    <nav className="board-tabbar" aria-label="Navegación principal">
+      {navLinks.map(({ label, href, Icon }) => (
+        <a key={href} className="board-tabbar-link" href={href}>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-5 h-5"
+          >
+            <Icon />
+          </svg>
+          <span>{label}</span>
+        </a>
+      ))}
+    </nav>
   );
 }
 
