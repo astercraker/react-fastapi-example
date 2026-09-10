@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import ThemeToggle from "../core/components/ThemeToggle";
 import ChallengeModal from "./ChallengeModal";
+import NavMenu, { navLinks } from "./NavMenu";
 import "./board.css";
 
 interface Project {
@@ -10,7 +11,8 @@ interface Project {
   status: "shipped" | "progress";
   tags: string[];
   isReal?: boolean;
-  thumb: "lines" | "rings" | "spark" | "frames";
+  imageSeed: string;
+  rawImage?: boolean;
 }
 
 const projects: Project[] = [
@@ -21,7 +23,8 @@ const projects: Project[] = [
       "Sistema interno para procesar reclamos de seguros de punta a punta, de captura a liquidación.",
     status: "shipped",
     tags: [".NET", "React", "SQL Server"],
-    thumb: "lines",
+    imageSeed: "board-claims",
+    rawImage: true,
   },
   {
     id: "inventory",
@@ -30,7 +33,7 @@ const projects: Project[] = [
       "Servicio que mantiene stock consistente entre tiendas y e-commerce con eventos casi instantáneos.",
     status: "shipped",
     tags: [".NET Core", "React", "Azure"],
-    thumb: "rings",
+    imageSeed: "board-inventory",
   },
   {
     id: "portfolio",
@@ -40,7 +43,7 @@ const projects: Project[] = [
     status: "progress",
     tags: ["Python", "FastAPI", "React", "Docker"],
     isReal: true,
-    thumb: "spark",
+    imageSeed: "board-portfolio",
   },
   {
     id: "reports",
@@ -49,96 +52,27 @@ const projects: Project[] = [
       "Job en Python que consolida datos operativos y publica reportes programados sin intervención manual.",
     status: "progress",
     tags: ["Python", "FastAPI", "PostgreSQL"],
-    thumb: "frames",
+    imageSeed: "board-reports",
   },
 ];
 
-function ThumbLines() {
-  return (
-    <svg viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true">
-      <rect width="400" height="160" fill="var(--board-surface-2)" />
-      <rect x="24" y="24" width="150" height="10" rx="2" fill="var(--board-border)" />
-      <rect x="24" y="46" width="220" height="8" rx="2" fill="var(--board-border)" />
-      <rect
-        x="24"
-        y="72"
-        width="352"
-        height="64"
-        rx="6"
-        fill="none"
-        stroke="var(--board-accent)"
-        strokeWidth="1.5"
-        opacity="0.5"
-      />
-      <rect x="40" y="86" width="90" height="8" rx="2" fill="var(--board-accent)" opacity="0.55" />
-      <rect x="40" y="102" width="140" height="6" rx="2" fill="var(--board-border)" />
-      <rect x="40" y="116" width="110" height="6" rx="2" fill="var(--board-border)" />
-    </svg>
-  );
-}
-
-function ThumbRings() {
-  return (
-    <svg viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true">
-      <rect width="400" height="160" fill="var(--board-surface-2)" />
-      <circle cx="90" cy="80" r="34" fill="none" stroke="var(--board-accent)" strokeWidth="1.5" opacity="0.5" />
-      <circle cx="150" cy="80" r="34" fill="none" stroke="var(--board-border)" strokeWidth="1.5" />
-      <rect x="210" y="40" width="160" height="10" rx="2" fill="var(--board-border)" />
-      <rect x="210" y="62" width="120" height="8" rx="2" fill="var(--board-border)" />
-      <rect x="210" y="86" width="140" height="8" rx="2" fill="var(--board-accent)" opacity="0.5" />
-    </svg>
-  );
-}
-
-function ThumbSpark() {
-  return (
-    <svg viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true">
-      <rect width="400" height="160" fill="var(--board-surface-2)" />
-      <path
-        d="M24 120 L90 70 L150 96 L220 40 L300 82 L376 30"
-        fill="none"
-        stroke="var(--board-accent)"
-        strokeWidth="2"
-      />
-      <circle cx="220" cy="40" r="4" fill="var(--board-accent)" />
-    </svg>
-  );
-}
-
-function ThumbFrames() {
-  return (
-    <svg viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true">
-      <rect width="400" height="160" fill="var(--board-surface-2)" />
-      <rect x="24" y="30" width="90" height="100" rx="4" fill="none" stroke="var(--board-border)" strokeWidth="1.5" />
-      <rect
-        x="126"
-        y="30"
-        width="90"
-        height="60"
-        rx="4"
-        fill="none"
-        stroke="var(--board-accent)"
-        strokeWidth="1.5"
-        opacity="0.55"
-      />
-      <rect x="228" y="30" width="90" height="80" rx="4" fill="none" stroke="var(--board-border)" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
-const thumbs = {
-  lines: ThumbLines,
-  rings: ThumbRings,
-  spark: ThumbSpark,
-  frames: ThumbFrames,
-};
-
 function ProjectCard({ project }: { project: Project }) {
-  const Thumb = thumbs[project.thumb];
   return (
     <article className="board-card">
-      <div className="board-card-thumb">
-        <Thumb />
+      <div
+        className={`board-card-thumb${project.rawImage ? " board-card-thumb--raw" : ""}`}
+      >
+        <img
+          className={`board-card-img${project.rawImage ? " board-card-img--raw" : ""}`}
+          src={`https://picsum.photos/seed/${project.imageSeed}/640/360`}
+          alt=""
+          loading="lazy"
+        />
+        {project.rawImage && (
+          <span className="board-card-thumb-note board-mono">
+            sin tratamiento
+          </span>
+        )}
       </div>
       <div className="board-card-body">
         <div className="board-card-title-row">
@@ -183,12 +117,26 @@ function App() {
             <span className="board-name">Domingo Trejo</span>
             <span className="board-role">Desarrollador Fullstack</span>
           </div>
+
+          <nav className="board-desktop-nav" aria-label="Navegación principal">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                className="board-desktop-nav-link"
+                href={link.href}
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
           <div className="board-header-actions">
             <span className="board-status-pill board-mono">
               <span className="board-status-dot" />
               aceptando nuevas solicitudes
             </span>
-            <ThemeToggle />
+            <ThemeToggle className="board-theme-btn" />
+            <NavMenu />
           </div>
         </div>
       </header>

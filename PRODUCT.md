@@ -29,9 +29,10 @@ Portafolio personal, no un producto competitivo de nicho: el diferenciador es el
 
 - Frontend: React 19 + Vite + TypeScript + Tailwind v4.
 - Backend: FastAPI (Python, uv), con Postgres opcional vía `DATABASE_URL`.
-- Sección de posts/blog: aún no implementada — pendiente definir fuente de contenido (estático, CMS, o servido desde el backend).
+- Secciones planeadas del sitio (navegación, aún sin rutas reales — el autor va a integrar react-router-dom): Retos (board de ideas/retos enviados por visitantes), Blog, Agenda (para agendar una reunión), Herramientas (utilidades que el autor construya para desarrolladores o clientes).
 - Dashboard: la vista "Visitantes por país" existe en el frontend, pero el endpoint de estadísticas en el backend todavía no está listo (placeholder actual).
-- Indeciso: mecanismo final de autorización del dashboard más allá del basicauth ya provisto, y fuente de datos de analítica.
+- Backend pendiente: endpoint `POST /challenges` para guardar los retos enviados desde el modal "Proponme un reto" (frontend ya implementado y apuntando ahí).
+- Indeciso: mecanismo final de autorización del dashboard más allá del basicauth ya provisto, fuente de datos de analítica, y contenido/mecanismo de Agenda y Herramientas.
 
 ## Brand Commitments
 

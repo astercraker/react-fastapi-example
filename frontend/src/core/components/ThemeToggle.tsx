@@ -6,7 +6,7 @@ function SunIcon() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       className="w-[18px] h-[18px]"
@@ -23,7 +23,7 @@ function MoonIcon() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       className="w-[18px] h-[18px]"
@@ -33,7 +33,7 @@ function MoonIcon() {
   );
 }
 
-function ThemeToggle() {
+function ThemeToggle({ className }: { className?: string }) {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -42,7 +42,10 @@ function ThemeToggle() {
       aria-label={
         theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"
       }
-      className="w-9 h-9 rounded-full flex items-center justify-center text-[var(--text)] border border-[var(--border)] hover:text-[var(--text-h)] hover:border-[var(--accent-border)] transition-colors cursor-pointer"
+      className={
+        className ??
+        "w-9 h-9 rounded-full flex items-center justify-center text-[var(--text)] border border-[var(--border)] hover:text-[var(--text-h)] hover:border-[var(--accent-border)] transition-colors cursor-pointer"
+      }
     >
       {theme === "dark" ? <SunIcon /> : <MoonIcon />}
     </button>

@@ -112,7 +112,7 @@ function ChallengeModal({
               Proponme un reto
             </h2>
             <p className="board-modal-desc">
-              Contame qué te gustaría que resuelva. Si tiene solución, te la
+              Cuéntame qué te gustaría que resuelva. Si tiene solución, te la
               muestro.
             </p>
 
@@ -123,7 +123,7 @@ function ChallengeModal({
               id="challenge-idea"
               ref={textareaRef}
               className="board-textarea"
-              rows={4}
+              rows={5}
               required
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
@@ -144,7 +144,7 @@ function ChallengeModal({
 
             {status === "error" && (
               <p className="board-modal-error" role="alert">
-                No se pudo enviar. Escribime directo a{" "}
+                No se pudo enviar. Escríbeme directo a{" "}
                 <a
                   className="board-modal-error-link"
                   href="mailto:domingo.trejo@hotmail.com"
