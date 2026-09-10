@@ -1,219 +1,284 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ThemeToggle from "../core/components/ThemeToggle";
+import ChallengeModal from "./ChallengeModal";
+import "./board.css";
 
-interface Idea {
-  id: number;
-  text: string;
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  status: "shipped" | "progress";
+  tags: string[];
+  isReal?: boolean;
+  thumb: "lines" | "rings" | "spark" | "frames";
 }
 
-const initialIdeas: Idea[] = [
+const projects: Project[] = [
   {
-    id: 1,
-    text: "Exportar los reportes del dashboard directo a PDF.",
+    id: "claims",
+    title: "Plataforma de Gestión de Siniestros",
+    description:
+      "Sistema interno para procesar reclamos de seguros de punta a punta, de captura a liquidación.",
+    status: "shipped",
+    tags: [".NET", "React", "SQL Server"],
+    thumb: "lines",
   },
   {
-    id: 2,
-    text: "Avisar por correo cuando el estado de una tarea cambie.",
+    id: "inventory",
+    title: "Sincronización de Inventario en Tiempo Real",
+    description:
+      "Servicio que mantiene stock consistente entre tiendas y e-commerce con eventos casi instantáneos.",
+    status: "shipped",
+    tags: [".NET Core", "React", "Azure"],
+    thumb: "rings",
   },
   {
-    id: 3,
-    text: "Agregar un modo oscuro que se recuerde por usuario.",
+    id: "portfolio",
+    title: "react-fastapi-example",
+    description:
+      "Este mismo portafolio. React + Vite en el frontend, FastAPI en el backend, Docker Compose para todo el stack.",
+    status: "progress",
+    tags: ["Python", "FastAPI", "React", "Docker"],
+    isReal: true,
+    thumb: "spark",
+  },
+  {
+    id: "reports",
+    title: "Pipeline de Reportes Automatizados",
+    description:
+      "Job en Python que consolida datos operativos y publica reportes programados sin intervención manual.",
+    status: "progress",
+    tags: ["Python", "FastAPI", "PostgreSQL"],
+    thumb: "frames",
   },
 ];
 
-function IdeaIcon({ className }: { className?: string }) {
+function ThumbLines() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M9 18h6" />
-      <path d="M10 21h4" />
-      <path d="M12 3a6 6 0 0 0-4 10.472V16a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.528A6 6 0 0 0 12 3Z" />
+    <svg viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true">
+      <rect width="400" height="160" fill="var(--board-surface-2)" />
+      <rect x="24" y="24" width="150" height="10" rx="2" fill="var(--board-border)" />
+      <rect x="24" y="46" width="220" height="8" rx="2" fill="var(--board-border)" />
+      <rect
+        x="24"
+        y="72"
+        width="352"
+        height="64"
+        rx="6"
+        fill="none"
+        stroke="var(--board-accent)"
+        strokeWidth="1.5"
+        opacity="0.5"
+      />
+      <rect x="40" y="86" width="90" height="8" rx="2" fill="var(--board-accent)" opacity="0.55" />
+      <rect x="40" y="102" width="140" height="6" rx="2" fill="var(--board-border)" />
+      <rect x="40" y="116" width="110" height="6" rx="2" fill="var(--board-border)" />
     </svg>
   );
 }
 
-function SendIcon() {
+function ThumbRings() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="w-[18px] h-[18px]"
-    >
-      <path d="M12 19V5" />
-      <path d="M5 12l7-7 7 7" />
+    <svg viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true">
+      <rect width="400" height="160" fill="var(--board-surface-2)" />
+      <circle cx="90" cy="80" r="34" fill="none" stroke="var(--board-accent)" strokeWidth="1.5" opacity="0.5" />
+      <circle cx="150" cy="80" r="34" fill="none" stroke="var(--board-border)" strokeWidth="1.5" />
+      <rect x="210" y="40" width="160" height="10" rx="2" fill="var(--board-border)" />
+      <rect x="210" y="62" width="120" height="8" rx="2" fill="var(--board-border)" />
+      <rect x="210" y="86" width="140" height="8" rx="2" fill="var(--board-accent)" opacity="0.5" />
     </svg>
   );
 }
 
-const GLOW_SIZE = 520;
+function ThumbSpark() {
+  return (
+    <svg viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true">
+      <rect width="400" height="160" fill="var(--board-surface-2)" />
+      <path
+        d="M24 120 L90 70 L150 96 L220 40 L300 82 L376 30"
+        fill="none"
+        stroke="var(--board-accent)"
+        strokeWidth="2"
+      />
+      <circle cx="220" cy="40" r="4" fill="var(--board-accent)" />
+    </svg>
+  );
+}
+
+function ThumbFrames() {
+  return (
+    <svg viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true">
+      <rect width="400" height="160" fill="var(--board-surface-2)" />
+      <rect x="24" y="30" width="90" height="100" rx="4" fill="none" stroke="var(--board-border)" strokeWidth="1.5" />
+      <rect
+        x="126"
+        y="30"
+        width="90"
+        height="60"
+        rx="4"
+        fill="none"
+        stroke="var(--board-accent)"
+        strokeWidth="1.5"
+        opacity="0.55"
+      />
+      <rect x="228" y="30" width="90" height="80" rx="4" fill="none" stroke="var(--board-border)" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+const thumbs = {
+  lines: ThumbLines,
+  rings: ThumbRings,
+  spark: ThumbSpark,
+  frames: ThumbFrames,
+};
+
+function ProjectCard({ project }: { project: Project }) {
+  const Thumb = thumbs[project.thumb];
+  return (
+    <article className="board-card">
+      <div className="board-card-thumb">
+        <Thumb />
+      </div>
+      <div className="board-card-body">
+        <div className="board-card-title-row">
+          <span className="board-card-title">{project.title}</span>
+          <span
+            className={`board-tag board-mono ${
+              project.status === "shipped"
+                ? "board-tag--shipped"
+                : "board-tag--progress"
+            }`}
+          >
+            {project.status === "shipped" ? "shipped" : "en curso"}
+          </span>
+        </div>
+        <p className="board-card-desc">
+          <span className="board-card-note">
+            {project.isReal ? "Real — " : "Ejemplo — "}
+          </span>
+          {project.description}
+        </p>
+        <div className="board-card-tags">
+          {project.tags.map((tag) => (
+            <span key={tag} className="board-chip board-mono">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+}
 
 function App() {
-  const [text, setText] = useState("");
-  const [ideas, setIdeas] = useState<Idea[]>(initialIdeas);
-  const [glowVisible, setGlowVisible] = useState(false);
-  const glowRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleMove(e: MouseEvent) {
-      glowRef.current?.style.setProperty(
-        "transform",
-        `translate(${e.clientX - GLOW_SIZE / 2}px, ${e.clientY - GLOW_SIZE / 2}px)`,
-      );
-      setGlowVisible(true);
-    }
-    function handleLeave() {
-      setGlowVisible(false);
-    }
-    window.addEventListener("mousemove", handleMove);
-    document.addEventListener("mouseleave", handleLeave);
-    return () => {
-      window.removeEventListener("mousemove", handleMove);
-      document.removeEventListener("mouseleave", handleLeave);
-    };
-  }, []);
-
-  function handleSubmit() {
-    const value = text.trim();
-    if (!value) return;
-    setIdeas((prev) => [{ id: Date.now(), text: value }, ...prev]);
-    setText("");
-  }
+  const [isChallengeOpen, setChallengeOpen] = useState(false);
+  const challengeBtnRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <>
-      <div
-        ref={glowRef}
-        aria-hidden="true"
-        className="pointer-events-none fixed top-0 left-0 -z-10 rounded-full transition-opacity duration-300"
-        style={{
-          width: GLOW_SIZE,
-          height: GLOW_SIZE,
-          opacity: glowVisible ? 1 : 0,
-          background:
-            "radial-gradient(circle, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%)",
-          filter: "blur(50px)",
-        }}
-      />
-
-      <nav className="flex items-center justify-between px-8 py-[18px] border-b border-[var(--border)]">
-        <div className="flex items-center gap-2.5">
-          <div className="w-[26px] h-[26px] rounded-[7px] bg-[var(--accent)] flex items-center justify-center text-white text-[13px] font-semibold">
-            P
+    <div className="board-page">
+      <header className="board-header">
+        <div className="board-wrap board-header-row">
+          <div className="board-identity">
+            <span className="board-name">Domingo Trejo</span>
+            <span className="board-role">Desarrollador Fullstack</span>
           </div>
-          <span className="font-semibold text-[16px] text-[var(--text-h)] tracking-[-0.2px]">
-            Proyecto
-          </span>
-        </div>
-        <div className="flex items-center gap-7 text-sm">
-          <a
-            href="#"
-            className="text-[var(--text)] hover:text-[var(--text-h)] transition-colors"
-          >
-            Inicio
-          </a>
-          <a
-            href="#"
-            className="text-[var(--text)] hover:text-[var(--text-h)] transition-colors"
-          >
-            Proyectos
-          </a>
-          <a href="#" className="text-[var(--text-h)]">
-            Ideas
-          </a>
-          <a
-            href="#"
-            className="text-[var(--text)] hover:text-[var(--text-h)] transition-colors"
-          >
-            Acerca de
-          </a>
-        </div>
-        <div className="w-[104px] flex justify-end">
-          <ThemeToggle />
-        </div>
-      </nav>
-
-      <main className="flex-1 flex flex-col items-center gap-8 px-6 py-16">
-        <div className="flex flex-col items-center gap-5">
-          <div
-            className="w-20 h-20 rounded-full flex items-center justify-center"
-            style={{
-              background:
-                "radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 70%)",
-              boxShadow:
-                "0 0 50px 6px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 0 18px color-mix(in srgb, var(--accent) 30%, transparent)",
-              border: "1px solid var(--accent-border)",
-            }}
-          >
-            <IdeaIcon className="w-8 h-8 text-[var(--accent)]" />
-          </div>
-          <h1 className="text-balance !text-[32px] !my-0">
-            ¿Qué idea tienes para el proyecto?
-          </h1>
-          <p className="text-[15px] text-[var(--text)]">
-            Cuéntanosla y te ayudamos a desarrollarla.
-          </p>
-        </div>
-
-        <div className="prompt-box w-full max-w-[640px] flex flex-col gap-4 p-6">
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Ej: una vista de calendario para planear los sprints..."
-            rows={3}
-            className="w-full resize-none bg-transparent outline-none text-[17px] text-[var(--text-h)] placeholder:text-[var(--text)]"
-          />
-          <div className="flex items-center justify-between">
-            <span className="text-[13px] text-[var(--text)]">
-              Sé tan específico como quieras
+          <div className="board-header-actions">
+            <span className="board-status-pill board-mono">
+              <span className="board-status-dot" />
+              aceptando nuevas solicitudes
             </span>
-            <button
-              onClick={handleSubmit}
-              disabled={!text.trim()}
-              aria-label="Enviar idea"
-              className="w-9 h-9 rounded-full flex items-center justify-center text-white bg-[var(--accent)] disabled:opacity-[0.35] disabled:cursor-not-allowed hover:opacity-90 transition-opacity cursor-pointer"
-            >
-              <SendIcon />
-            </button>
+            <ThemeToggle />
           </div>
         </div>
+      </header>
 
-        <div className="w-full max-w-[900px] flex flex-col gap-4">
-          <span className="text-xs uppercase tracking-wider text-[var(--text)]">
-            Ideas recientes
+      <div className="board-wrap board-hero">
+        <h1>
+          Diez años entregando sistemas en producción —{" "}
+          <span className="board-accent-word">
+            ahora migrando esa disciplina a Python.
           </span>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {ideas.map((idea) => (
-              <div
-                key={idea.id}
-                className="flex flex-col gap-3 rounded-2xl p-4 text-left"
-                style={{
-                  background: "var(--code-bg)",
-                  border: "1px solid var(--border)",
-                }}
-              >
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--accent-bg)]">
-                  <IdeaIcon className="w-4 h-4 text-[var(--accent)]" />
-                </div>
-                <p className="text-sm text-[var(--text-h)] leading-relaxed">
-                  {idea.text}
-                </p>
-              </div>
-            ))}
+        </h1>
+        <p>
+          Fullstack senior con base en .NET y React. Estoy adoptando Python y
+          FastAPI de forma activa: este mismo sitio corre sobre ese stack.
+          Ponme un reto y te muestro cómo trabajo.
+        </p>
+        <button
+          type="button"
+          ref={challengeBtnRef}
+          className="board-btn board-btn--primary board-hero-cta"
+          onClick={() => setChallengeOpen(true)}
+        >
+          Proponme un reto
+        </button>
+        <div className="board-chips">
+          <span className="board-chip board-chip--accent board-mono">
+            Python / FastAPI
+          </span>
+          <span className="board-chip board-mono">.NET</span>
+          <span className="board-chip board-mono">React</span>
+          <span className="board-chip board-mono">TypeScript</span>
+          <span className="board-chip board-mono">SQL Server</span>
+          <span className="board-chip board-mono">Docker</span>
+          <span className="board-chip board-mono">Azure</span>
+        </div>
+      </div>
+
+      <section className="board-wrap board-section">
+        <div className="board-section-head">
+          <h2>Proyectos</h2>
+          <span className="board-section-count board-mono">
+            {projects.length} servicios registrados
+          </span>
+        </div>
+        <div className="board-grid">
+          {projects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </div>
+      </section>
+
+      <section className="board-contact">
+        <div className="board-wrap board-contact-row">
+          <div>
+            <h2>Hablemos de tu proyecto</h2>
+            <p>
+              Reclutadores, clientes o simple curiosidad técnica — respondo
+              directo.
+            </p>
+          </div>
+          <div className="board-contact-actions">
+            <a
+              className="board-btn board-btn--primary"
+              href="mailto:domingo.trejo@hotmail.com"
+            >
+              Escribir por email
+            </a>
+            <a
+              className="board-btn board-btn--secondary"
+              href="https://www.linkedin.com/in/jos%C3%A9-domingo-trejo-fern%C3%A1ndez-35204072/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Ver LinkedIn
+            </a>
           </div>
         </div>
-      </main>
-    </>
+      </section>
+
+      <footer className="board-wrap board-footer board-mono">
+        <span>domingo.trejo@hotmail.com</span>
+      </footer>
+
+      {isChallengeOpen && (
+        <ChallengeModal
+          onClose={() => setChallengeOpen(false)}
+          triggerRef={challengeBtnRef}
+        />
+      )}
+    </div>
   );
 }
 
