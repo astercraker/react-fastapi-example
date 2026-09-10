@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import ThemeToggle from "../core/components/ThemeToggle";
 import ChallengeModal from "./ChallengeModal";
-import NavMenu, { navLinks } from "./NavMenu";
+import NavMenu, { BottomTabBar, navLinks } from "./NavMenu";
 import "./board.css";
 
 interface Project {
@@ -129,18 +129,16 @@ function App() {
               </a>
             ))}
           </nav>
-
-          <div className="board-header-actions">
-            <span className="board-status-pill board-mono">
-              <span className="board-status-dot" />
-              aceptando nuevas solicitudes
-            </span>
-            <ThemeToggle className="board-theme-btn" />
-            <NavMenu />
-          </div>
         </div>
       </header>
-
+      <div className="board-wrap board-header-actions">
+        <span className="board-status-pill board-mono">
+          <span className="board-status-dot" />
+          aceptando nuevas solicitudes
+        </span>
+        <ThemeToggle className="board-theme-btn" />
+        <NavMenu />
+      </div>
       <div className="board-wrap board-hero">
         <h1>
           Diez años entregando sistemas en producción —{" "}
@@ -150,8 +148,8 @@ function App() {
         </h1>
         <p>
           Fullstack senior con base en .NET y React. Estoy adoptando Python y
-          FastAPI de forma activa: este mismo sitio corre sobre ese stack.
-          Ponme un reto y te muestro cómo trabajo.
+          FastAPI de forma activa: este mismo sitio corre sobre ese stack. Ponme
+          un reto y te muestro cómo trabajo.
         </p>
         <button
           type="button"
@@ -219,6 +217,8 @@ function App() {
       <footer className="board-wrap board-footer board-mono">
         <span>domingo.trejo@hotmail.com</span>
       </footer>
+
+      <BottomTabBar />
 
       {isChallengeOpen && (
         <ChallengeModal

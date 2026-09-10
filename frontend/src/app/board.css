@@ -69,6 +69,30 @@
   .board-wrap {
     max-width: 1360px;
   }
+  .board-hero h1 {
+    font-size: clamp(28px, 4vw, 46px);
+  }
+  .board-hero p {
+    font-size: 18.5px;
+  }
+  .board-desktop-nav-link {
+    font-size: 16px;
+  }
+  .board-status-pill {
+    font-size: 14px;
+  }
+  .board-section-head h2 {
+    font-size: 15px;
+  }
+  .board-card-title {
+    font-size: 17.5px;
+  }
+  .board-card-desc {
+    font-size: 15.5px;
+  }
+  .board-chip {
+    font-size: 13px;
+  }
 }
 
 .board-header {
@@ -106,6 +130,10 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-top: 0.75rem; /* 12px */
+}
+.board-nav {
+  margin-left: auto;
 }
 
 .board-desktop-nav {
@@ -132,12 +160,19 @@
   .board-desktop-nav {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
+    padding: 6px;
+    border-radius: 999px;
+    background: var(--board-surface);
+    border: 1px solid var(--board-border);
+    box-shadow: 0 10px 30px -16px rgba(0, 0, 0, 0.35);
   }
   .board-header-actions {
     flex-basis: 100%;
     justify-content: flex-end;
-    margin-top: 4px;
+  }
+  .board-nav {
+    display: none;
   }
 }
 
@@ -351,6 +386,7 @@
 }
 
 .board-hero {
+  margin-top: -0.75rem; /* -12px, cancels board-header-actions' margin-top */
   padding-top: 44px;
   padding-bottom: 40px;
 }
@@ -628,7 +664,7 @@
 .board-modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 20;
+  z-index: 30;
   background: color-mix(in srgb, var(--board-bg) 78%, transparent);
   backdrop-filter: blur(3px);
   display: flex;
@@ -770,4 +806,47 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.board-tabbar {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .board-page {
+    padding-bottom: 76px;
+  }
+  .board-tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 4px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: var(--board-surface);
+    border-top: 1px solid var(--board-border);
+  }
+}
+.board-tabbar-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+  padding: 4px 6px;
+  border-radius: 8px;
+  color: var(--board-ink-muted);
+  text-decoration: none;
+  font-size: 11px;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+.board-tabbar-link:hover,
+.board-tabbar-link:focus-visible {
+  color: var(--board-accent);
+  background: var(--board-accent-soft);
 }
