@@ -1,1 +1,6 @@
 .env
+
+# Impeccable: local-machine hook config and downloaded platform binary
+.claude/settings.local.json
+.claude/skills/*/scripts/bin/
+frontend/.impeccable/
