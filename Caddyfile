@@ -9,6 +9,11 @@
 }
 
 {$DOMAIN} {
+	header {
+		-Server
+		-Via
+	}
+
 	handle /api/docs* {
 		basicauth {
 			{$DASHBOARD_USER} {$DASHBOARD_PASS_HASH}
