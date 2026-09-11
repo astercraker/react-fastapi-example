@@ -28,6 +28,7 @@ Portafolio personal, no un producto competitivo de nicho: el diferenciador es el
 ## Capabilities and Constraints
 
 - Frontend: React 19 + Vite + TypeScript + Tailwind v4.
+- Estilos: usar utilities de Tailwind CSS directamente en el JSX para todo trabajo de diseño/CSS nuevo — no crear archivos `.css` aparte con clases propias (como se hizo en `board.css`, que quedó como excepción a corregir, no como el patrón a seguir).
 - Backend: FastAPI (Python, uv), con Postgres opcional vía `DATABASE_URL`.
 - Secciones planeadas del sitio (navegación, aún sin rutas reales — el autor va a integrar react-router-dom): Retos (board de ideas/retos enviados por visitantes), Blog, Agenda (para agendar una reunión), Herramientas (utilidades que el autor construya para desarrolladores o clientes).
 - Dashboard: la vista "Visitantes por país" existe en el frontend, pero el endpoint de estadísticas en el backend todavía no está listo (placeholder actual).
