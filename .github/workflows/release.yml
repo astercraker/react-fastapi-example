@@ -27,6 +27,7 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: ./backend
+          target: prod
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/react-fastapi-example-backend:${{ github.ref_name }}
 
