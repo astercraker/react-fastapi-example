@@ -24,6 +24,8 @@ resource "digitalocean_droplet" "this" {
     domain              = var.domain
     dashboard_user      = var.dashboard_user
     dashboard_pass_hash = var.dashboard_pass_hash
+    postgres_password   = var.postgres_password
+    compose_args        = join(" ", [for f in var.compose_files : "-f ${f}"])
   })
 }
 

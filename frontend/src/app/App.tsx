@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import ThemeToggle from "../core/components/ThemeToggle";
 import ChallengeModal from "./ChallengeModal";
 import NavMenu, { BottomTabBar, navLinks } from "./NavMenu";
+import TechStackPanel from "./TechStackPanel";
 import "./board.css";
 
 interface Project {
@@ -139,50 +140,61 @@ function App() {
         <ThemeToggle className="board-theme-btn" />
         <NavMenu />
       </div>
-      <div className="board-wrap board-hero">
-        <h1>
-          Diez años entregando sistemas en producción —{" "}
-          <span className="board-accent-word">
-            ahora migrando esa disciplina a Python.
-          </span>
-        </h1>
-        <p>
-          Fullstack senior con base en .NET y React. Estoy adoptando Python y
-          FastAPI de forma activa: este mismo sitio corre sobre ese stack. Ponme
-          un reto y te muestro cómo trabajo.
-        </p>
-        <button
-          type="button"
-          ref={challengeBtnRef}
-          className="board-btn board-btn--primary board-hero-cta"
-          onClick={() => setChallengeOpen(true)}
-        >
-          Proponme un reto
-        </button>
-        <div className="board-chips">
-          <span className="board-chip board-chip--accent board-mono">
-            Python / FastAPI
-          </span>
-          <span className="board-chip board-mono">.NET</span>
-          <span className="board-chip board-mono">React</span>
-          <span className="board-chip board-mono">TypeScript</span>
-          <span className="board-chip board-mono">SQL Server</span>
-          <span className="board-chip board-mono">Docker</span>
-          <span className="board-chip board-mono">Azure</span>
+      <div className="board-hero">
+        <div className="board-wrap">
+          <div className="board-hero-grid">
+            <div className="board-hero-copy">
+              <h1>
+                Diez años entregando sistemas en producción —{" "}
+                <span className="board-accent-word">
+                  ahora migrando esa disciplina a Python.
+                </span>
+              </h1>
+              <p>
+                Fullstack senior con base en .NET y React. Estoy adoptando
+                Python y FastAPI de forma activa: este mismo sitio corre sobre
+                ese stack. Ponme un reto y te muestro cómo trabajo.
+              </p>
+              <button
+                type="button"
+                ref={challengeBtnRef}
+                className="board-btn board-btn--primary board-hero-cta"
+                onClick={() => setChallengeOpen(true)}
+              >
+                Proponme un reto
+              </button>
+              <div className="board-chips">
+                <span className="board-chip board-chip--accent board-mono">
+                  Python / FastAPI
+                </span>
+                <span className="board-chip board-mono">.NET</span>
+                <span className="board-chip board-mono">React</span>
+                <span className="board-chip board-mono">TypeScript</span>
+                <span className="board-chip board-mono">SQL Server</span>
+                <span className="board-chip board-mono">Docker</span>
+                <span className="board-chip board-mono">Azure</span>
+              </div>
+            </div>
+            <div className="board-hero-panel">
+              <TechStackPanel />
+            </div>
+          </div>
         </div>
       </div>
 
-      <section className="board-wrap board-section">
-        <div className="board-section-head">
-          <h2>Proyectos</h2>
-          <span className="board-section-count board-mono">
-            {projects.length} servicios registrados
-          </span>
-        </div>
-        <div className="board-grid">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
+      <section className="board-section">
+        <div className="board-wrap">
+          <div className="board-section-head">
+            <h2>Proyectos</h2>
+            <span className="board-section-count board-mono">
+              {projects.length} proyectos
+            </span>
+          </div>
+          <div className="board-grid">
+            {projects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -214,8 +226,55 @@ function App() {
         </div>
       </section>
 
-      <footer className="board-wrap board-footer board-mono">
-        <span>domingo.trejo@hotmail.com</span>
+      <footer className="board-footer">
+        <div className="board-wrap board-footer-row">
+          <span className="board-footer-brand board-mono">
+            © 2026 Domingo Trejo
+          </span>
+          <div className="board-footer-social">
+            <a
+              className="board-footer-icon-link"
+              href="mailto:domingo.trejo@hotmail.com"
+              aria-label="Email"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-[22px] h-[22px]"
+              >
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="m4 7 8 6 8-6" />
+              </svg>
+            </a>
+            <a
+              className="board-footer-icon-link"
+              href="https://www.linkedin.com/in/jos%C3%A9-domingo-trejo-fern%C3%A1ndez-35204072/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-[22px] h-[22px]"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="3" />
+                <line x1="7.5" y1="10" x2="7.5" y2="16.5" />
+                <circle cx="7.5" cy="7" r="0.6" fill="currentColor" />
+                <path d="M11.5 16.5V12.8c0-1.3.9-2.3 2.1-2.3s2 .9 2 2.2v3.8" />
+                <line x1="11.5" y1="10" x2="11.5" y2="16.5" />
+              </svg>
+            </a>
+          </div>
+        </div>
       </footer>
 
       <BottomTabBar />

@@ -97,3 +97,16 @@ variable "dashboard_pass_hash" {
   default     = ""
   sensitive   = true
 }
+
+variable "postgres_password" {
+  description = "Contraseña del Postgres en contenedor, inyectada como POSTGRES_PASSWORD (solo si se usa docker-compose.db.yml)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "compose_files" {
+  description = "Archivos de docker compose (relativos a la raíz del repo) usados para levantar la app"
+  type        = list(string)
+  default     = ["docker-compose.yml", "docker-compose.prod.yml"]
+}

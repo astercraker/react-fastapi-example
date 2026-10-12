@@ -46,9 +46,14 @@ cat >> "${deploy_path}/.env" <<'ENV_EOF'
 DASHBOARD_PASS_HASH=${dashboard_pass_hash}
 ENV_EOF
 %{ endif }
+%{ if postgres_password != "" }
+cat >> "${deploy_path}/.env" <<'ENV_EOF'
+POSTGRES_PASSWORD=${postgres_password}
+ENV_EOF
+%{ endif }
 if [ -f "${deploy_path}/.env" ]; then
   chmod 600 "${deploy_path}/.env"
 fi
 
-docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+docker compose ${compose_args} pull
+docker compose ${compose_args} up -d
